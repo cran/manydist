@@ -1,0 +1,17 @@
+citHeader("To cite manydist in publications, please use:")
+
+bibentry(bibtype = "Article",
+         title        = "(Un)biased Distances for Mixed-Type Data",
+         author       = c(person(given = "Michel",
+                                 family = "van de Velden"),
+                          person(given = "Alfonso",
+                                 family = "Iodice D'Enza"),
+                          person(given = "Angelos",
+                                 family = "Markos"),
+                          person(given = "Carlo",
+                                 family = "Cavicchia")),
+         year         = "2024",
+         journal      = "arXiv preprint",
+         note         = "Retrieved from https://arxiv.org/abs/2411.00429",
+         url          = "https://arxiv.org/abs/2411.00429"
+)

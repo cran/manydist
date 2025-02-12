@@ -1,0 +1,27 @@
+export(mdist, cdist, ndist)
+importFrom(entropy, entropy)
+importFrom(Matrix, Matrix)
+importFrom(fastDummies, dummy_cols)
+importFrom(data.table, data.table, setDT, fread, fwrite)
+importFrom(philentropy, distance)
+importFrom(cluster, daisy)
+importFrom(stats, IQR, dist, filter, median, start, cov, terms)
+importFrom(purrr, map_chr, map, map_dbl, pmap, map2, map2_dbl, map_df)
+importFrom(dplyr, mutate, pull, rename, where, across, select)
+importFrom(tidyr, crossing, unite, everything, all_of)
+importFrom(forcats, fct_lump_lowfreq, fct_drop, fct_count)
+importFrom(magrittr, `%>%`)
+importFrom(readr, parse_number)
+importFrom(utils, globalVariables)
+importFrom(fpc, distancefactor)
+importFrom(distances, distances)
+importFrom(tibble, tibble, as_tibble)  # Importing from tibble package
+importFrom(recipes, all_numeric_predictors,all_nominal_predictors, prep, bake, recipe, step_dummy, step_scale, step_mutate, step_center, step_pca, step_range, step_select, all_nominal, all_predictors)
+importFrom(Matrix, bdiag)
+importFrom(Rfast, dista, columns)
+# Sampling and splitting
+importFrom(rsample,
+    initial_split,
+    training,
+    testing,
+    tidy)
