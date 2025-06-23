@@ -90,10 +90,10 @@ mdist <- function(x,validate_x=NULL,response=NULL, distance_cont="manhattan", di
       distance_cont = "manhattan"
       distance_cat = "tot_var_dist"
       commensurable = TRUE
-      # cont_scaling = "pc_scores"
+      cont_scaling = "pc_scores"
       # cont_scaling="none"
       # cat_scaling="none"
-      scaling="std"
+     # scaling="std"
       if(is.null(validate_x)){
         cont_dist_mat = ndist(x = cont_data, method = distance_cont,commensurable = commensurable,scaling=scaling)  |>  as.matrix()
         cat_dist_mat = cdist(x = cat_data,method=distance_cat,commensurable = commensurable)$distance_mat

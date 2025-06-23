@@ -320,7 +320,7 @@ indicator_based<-function(x,validate_x,commensurable=FALSE, scaling="none", weig
     }
     
   }else if(scaling=="cat_dis"){
-    
+  
     # Create the qs_vec
     qs_vec = x |>
       as_tibble() |>

@@ -1,4 +1,4 @@
-4e4ebb7ea3be2f53b2d8ccc5b1ad439a *DESCRIPTION
+c7d9fffcdb9d1bbfcd6f41900f3462b1 *DESCRIPTION
 d2b1d2be0b986a2bebfb709284c26a2d *NAMESPACE
 3aa1eee630c00ed60f6db4e6bc50e539 *R/cat_custom_delta.R
 eb3ffc89a5dfaefe0e6935f9d52a8bf6 *R/cat_delta.R
@@ -7,9 +7,9 @@ f72226fa07e680582df67ef9502f05d6 *R/cdist.R
 b76b50dd357776d912eb91310bf7e77d *R/commensurable_weight.R
 c928418ed886d2ab30ef8915a5c9e309 *R/cont_delta_single_attr.R
 5ff5ba5a76f6821decdaa247876fd37a *R/gower_recipe.R
-d47d82a33b7efb2fcddf7ea5e1139459 *R/indicator_based.R
+9f104a141ff5f39c8f5ce36d75719d50 *R/indicator_based.R
 7fc91aab2d93b40610cd7d258b2b4007 *R/mahalanobis_like.R
-19224bc18f1d3b964905e8df2e2e72b0 *R/mdist.R
+97378b7f39c1c23f3035f02ffc20dd3c *R/mdist.R
 2316397066a2f45a7e7f537975d0ab0a *R/mix_delta.R
 2ab9af0708208dad9bcad4700d08188a *R/ndist.R
 cfe0000d941a35175246fd712ecc3d70 *R/z_preproc.R
