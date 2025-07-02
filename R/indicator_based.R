@@ -110,7 +110,7 @@ indicator_based<-function(x,validate_x,commensurable=FALSE, scaling="none", weig
       unlist()
     
     # Create the qs_diag
-  #  qs_diag = diag(1 / unlist(qs_vec))
+    #  qs_diag = diag(1 / unlist(qs_vec))
     qs_diag = diag(1 / sqrt(unlist(qs_vec))) # ADDED SQRT 27-12-2024
     # Dummy encode and center categorical features
     prep_c_Z = x |>
@@ -262,9 +262,9 @@ indicator_based<-function(x,validate_x,commensurable=FALSE, scaling="none", weig
             step_dummy(all_predictors(),one_hot = TRUE) |>
             prep(training = as_tibble(.x)))
         
-        Z_list = prep_Z  |> 
-          map(.x,~.x |> bake(new_data=NULL)
-          )
+        #Fix:2 July 2025
+        Z_list = prep_Z |> 
+          map(~.x |> bake(new_data = NULL))
         
         Q=map_dbl(x,nlevels)
         levels_identifier = rep(names(Q), times = as.vector(Q))
@@ -320,7 +320,7 @@ indicator_based<-function(x,validate_x,commensurable=FALSE, scaling="none", weig
     }
     
   }else if(scaling=="cat_dis"){
-  
+    
     # Create the qs_vec
     qs_vec = x |>
       as_tibble() |>
@@ -392,8 +392,9 @@ indicator_based<-function(x,validate_x,commensurable=FALSE, scaling="none", weig
             step_dummy(all_predictors(),one_hot = TRUE) |>
             prep(training = as_tibble(.x)))
         
+        #Fix:2 July 2025
         Z_list = prep_Z  |> 
-          map(.x,~.x |> bake(new_data=NULL)
+          map(~.x |> bake(new_data=NULL)
           )
         
         Q=map_dbl(x,nlevels)
@@ -445,7 +446,7 @@ indicator_based<-function(x,validate_x,commensurable=FALSE, scaling="none", weig
           )
       }
       cat_dist_mat = Reduce(`+`,commensurable_dist_structure |> pull(comm_dist))
-        
+      
     }
     # }
   }else if(scaling=="HLeucl"){
@@ -487,7 +488,7 @@ indicator_based<-function(x,validate_x,commensurable=FALSE, scaling="none", weig
     if(!commensurable) {
       #   if(weight_cat != "commensurable") {
       if(is.null(validate_x)){
-        cat_dist_mat = daisy(Zs,metric = "euclidean") |> as.matrix()
+         cat_dist_mat = daisy(Zs,metric = "euclidean",warnType=FALSE) |> as.matrix()
       }else{
         prep_Z = x |>
           recipe(~.) |>
@@ -507,75 +508,75 @@ indicator_based<-function(x,validate_x,commensurable=FALSE, scaling="none", weig
     } else {
       ####### NEW CODE
       if(is.null(validate_x)){
-      # Dummy encode categorical variables
-      Z_list <- x |>
-        map(~ as_tibble(.x) |>
-              recipe(~.) |>
-              step_dummy(all_nominal(), one_hot = TRUE) |>
-              prep() |>
-              bake(new_data = NULL)
-        )
-      
-      # Apply Hennig and Liao scaling to each categorical variable
-      eta_vec <- x |>
-        as_tibble() |>
-        map(function(x) {
-          as.vector(rep(fpc::distancefactor(
-            cat = nlevels(x),
-            catsizes = table(x)
-          ), nlevels(x)))
-        })
-      
-      # Create a distance matrix for each categorical variable
-      commensurable_dist_structure <- tibble(factor_name = names(x)) |>
-        mutate(
-          Zs = Z_list,
-          eta = eta_vec,
-          #   scaled_Zs = map2(Zs, eta, ~ as.matrix(.x) %*% diag(.y) / 2), # Hennig-Liao scaling
-          scaled_Zs = map2(Zs, eta, ~ as.matrix(.x) %*% diag(.y)), # Hennig-Liao scaling
-          by_var_dist = map(scaled_Zs, ~ daisy(.x, metric = "euclidean") |> as.matrix()), # Compute distance matrix
-          mean_by_var_dist = map_dbl(by_var_dist, ~ mean(.x)), # Compute mean distance
-          comm_dist = map2(by_var_dist, mean_by_var_dist, ~ .x / .y) # Normalize for commensurability
-        )
-    }else{
-      
-      prep_Z <- x |>
-        map(~ as_tibble(.x) |>
-              recipe(~.) |>
-              step_dummy(all_nominal(), one_hot = TRUE) |>
-              prep(training = .x)
-            )
-            
-            Z_list = prep_Z |> 
-              map(~.x |> bake(new_data = NULL))
-            
-            val_Z_list = map2(.x= prep_Z,.y=validate_x,~.x |> bake(new_data = as_tibble(.y)))
-      
-      # Apply Hennig and Liao scaling to each categorical variable
-      eta_vec <- x |>
-        as_tibble() |>
-        map(function(x) {
-          as.vector(rep(fpc::distancefactor(
-            cat = nlevels(x),
-            catsizes = table(x)
-          ), nlevels(x)))
-        })
-      
-      # Create a distance matrix for each categorical variable
-      commensurable_dist_structure <- tibble(factor_name = names(x)) |>
-        mutate(
-          Zs = Z_list,
-          val_Zs = val_Z_list,
-          eta = eta_vec,
-          #   scaled_Zs = map2(Zs, eta, ~ as.matrix(.x) %*% diag(.y) / 2), # Hennig-Liao scaling
-          scaled_Zs = map2(Zs, eta, ~ as.matrix(.x) %*% diag(.y)), # Hennig-Liao scaling
-          scaled_val_Zs = map2(val_Zs, eta, ~ as.matrix(.x) %*% diag(.y)), # Hennig-Liao scaling
-          by_var_dist = map2(.x=scaled_val_Zs,.y=scaled_Zs, ~ Rfast::dista(xnew=.x, x=.y, type = "euclidean") |> as.matrix()), # Compute distance matrix
-          mean_by_var_dist = map_dbl(by_var_dist, ~ mean(.x)), # Compute mean distance
-          comm_dist = map2(by_var_dist, mean_by_var_dist, ~ .x / .y) # Normalize for commensurability
-        )
-      
-      
+        # Dummy encode categorical variables
+        Z_list <- x |>
+          map(~ as_tibble(.x) |>
+                recipe(~.) |>
+                step_dummy(all_nominal(), one_hot = TRUE) |>
+                prep() |>
+                bake(new_data = NULL)
+          )
+        
+        # Apply Hennig and Liao scaling to each categorical variable
+        eta_vec <- x |>
+          as_tibble() |>
+          map(function(x) {
+            as.vector(rep(fpc::distancefactor(
+              cat = nlevels(x),
+              catsizes = table(x)
+            ), nlevels(x)))
+          })
+        
+        # Create a distance matrix for each categorical variable
+        commensurable_dist_structure <- tibble(factor_name = names(x)) |>
+          mutate(
+            Zs = Z_list,
+            eta = eta_vec,
+            #   scaled_Zs = map2(Zs, eta, ~ as.matrix(.x) %*% diag(.y) / 2), # Hennig-Liao scaling
+            scaled_Zs = map2(Zs, eta, ~ as.matrix(.x) %*% diag(.y)), # Hennig-Liao scaling
+            by_var_dist = map(scaled_Zs, ~ daisy(.x, metric = "euclidean",warnType=FALSE) |> as.matrix()), # Compute distance matrix
+            mean_by_var_dist = map_dbl(by_var_dist, ~ mean(.x)), # Compute mean distance
+            comm_dist = map2(by_var_dist, mean_by_var_dist, ~ .x / .y) # Normalize for commensurability
+          )
+      }else{
+        
+        prep_Z <- x |>
+          map(~ as_tibble(.x) |>
+                recipe(~.) |>
+                step_dummy(all_nominal(), one_hot = TRUE) |>
+                prep(training = .x)
+          )
+        
+        Z_list = prep_Z |> 
+          map(~.x |> bake(new_data = NULL))
+        
+        val_Z_list = map2(.x= prep_Z,.y=validate_x,~.x |> bake(new_data = as_tibble(.y)))
+        
+        # Apply Hennig and Liao scaling to each categorical variable
+        eta_vec <- x |>
+          as_tibble() |>
+          map(function(x) {
+            as.vector(rep(fpc::distancefactor(
+              cat = nlevels(x),
+              catsizes = table(x)
+            ), nlevels(x)))
+          })
+        
+        # Create a distance matrix for each categorical variable
+        commensurable_dist_structure <- tibble(factor_name = names(x)) |>
+          mutate(
+            Zs = Z_list,
+            val_Zs = val_Z_list,
+            eta = eta_vec,
+            #   scaled_Zs = map2(Zs, eta, ~ as.matrix(.x) %*% diag(.y) / 2), # Hennig-Liao scaling
+            scaled_Zs = map2(Zs, eta, ~ as.matrix(.x) %*% diag(.y)), # Hennig-Liao scaling
+            scaled_val_Zs = map2(val_Zs, eta, ~ as.matrix(.x) %*% diag(.y)), # Hennig-Liao scaling
+            by_var_dist = map2(.x=scaled_val_Zs,.y=scaled_Zs, ~ Rfast::dista(xnew=.x, x=.y, type = "euclidean") |> as.matrix()), # Compute distance matrix
+            mean_by_var_dist = map_dbl(by_var_dist, ~ mean(.x)), # Compute mean distance
+            comm_dist = map2(by_var_dist, mean_by_var_dist, ~ .x / .y) # Normalize for commensurability
+          )
+        
+        
       }
       # Aggregate the commensurable distance matrices by summing them up
       cat_dist_mat <- Reduce(`+`, commensurable_dist_structure |> pull(comm_dist))
@@ -622,7 +623,7 @@ indicator_based<-function(x,validate_x,commensurable=FALSE, scaling="none", weig
     
     if(!commensurable) {
       if(is.null(validate_x)){
-      cat_dist_mat = Z %*% inv_sq_D_p %*% delta_m %*% inv_sq_D_p %*% t(Z)
+        cat_dist_mat = Z %*% inv_sq_D_p %*% delta_m %*% inv_sq_D_p %*% t(Z)
       }else{
         val_Z = bake(prep_Z, new_data = validate_x) |> as.matrix()
         val_Z <- apply(val_Z, 2, as.numeric)
@@ -635,39 +636,39 @@ indicator_based<-function(x,validate_x,commensurable=FALSE, scaling="none", weig
         ~as_tibble(.x) |> recipe(~.)|>
           step_dummy(all_predictors(),one_hot = TRUE) |>
           prep(training = as_tibble(.x))
-        ) 
-        
-        Z_list = prep_Z |>
-          map(~.x |> bake(new_data=NULL))
+      ) 
+      
+      Z_list = prep_Z |>
+        map(~.x |> bake(new_data=NULL))
       
       Q=map_dbl(x,nlevels)
       levels_identifier = rep(names(Q), times = as.vector(Q))
       #delta_out = cat_delta(cats,method = method)
       
       if(is.null(validate_x)){
-      commensurable_dist_structure = tibble(factor_name = names(Q)) |>
-        mutate(delta = map(.x=factor_name,
-                           ~delta_m[levels_identifier==.x,
+        commensurable_dist_structure = tibble(factor_name = names(Q)) |>
+          mutate(delta = map(.x=factor_name,
+                             ~delta_m[levels_identifier==.x,
                                       levels_identifier==.x] |> as.matrix()
-        ),
-        Zs=Z_list,
-        by_var_dist = map2(.x=Z_list,.y=delta,
-                           ~as.matrix(.x) %*% .y %*% t(as.matrix(.x))),
-        mean_by_var_dist = map_dbl(by_var_dist,~mean(.x)),
-        comm_dist = map2(.x=by_var_dist,.y=mean_by_var_dist,
-                         ~.x /.y)
-        )
+          ),
+          Zs=Z_list,
+          by_var_dist = map2(.x=Z_list,.y=delta,
+                             ~as.matrix(.x) %*% .y %*% t(as.matrix(.x))),
+          mean_by_var_dist = map_dbl(by_var_dist,~mean(.x)),
+          comm_dist = map2(.x=by_var_dist,.y=mean_by_var_dist,
+                           ~.x /.y)
+          )
       }else{
         
         val_Z_list = map2(
           .x=prep_Z, .y=validate_x,
           ~.x |> bake(new_data=as_tibble(.y))
-          )
+        )
         
         commensurable_dist_structure = tibble(factor_name = names(Q)) |>
           mutate(delta = map(.x=factor_name,
                              ~delta_m[levels_identifier==.x,
-                                        levels_identifier==.x] |> as.matrix()
+                                      levels_identifier==.x] |> as.matrix()
           ),
           Zs=Z_list,
           val_Zs = val_Z_list,
