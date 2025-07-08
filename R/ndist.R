@@ -35,7 +35,7 @@ ndist <- function(x,validate_x=NULL, commensurable=FALSE, method = "manhattan",s
     if(is.null(threshold)){
       x = rec_x |> step_center(all_predictors()) |> step_scale(all_predictors()) |>
         step_pca(all_predictors(),num_comp=ncomp) |> prep(training = tr_x) |> bake(new_data=NULL)
-      
+    
       if(!is.null(validate_x)){
         validate_x = rec_x  |> step_center(all_predictors()) |> step_scale(all_predictors()) |>
           step_pca(all_predictors(),num_comp=ncomp)  |> prep(training = tr_x) |> bake(new_data=validate_x)

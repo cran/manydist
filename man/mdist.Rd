@@ -6,7 +6,7 @@ Computes pairwise distances between observations described by numeric and/or cat
 }
 \usage{
 mdist(x, validate_x = NULL, response = NULL, distance_cont = "manhattan", 
-      distance_cat = "tot_var_dist", commensurable = FALSE, scaling = "none",
+      distance_cat = "tot_var_dist", commensurable = FALSE, scaling_cont = "none",
       ncomp = ncol(x), threshold = NULL, preset = "custom")
 }
 \arguments{
@@ -16,9 +16,9 @@ mdist(x, validate_x = NULL, response = NULL, distance_cont = "manhattan",
   \item{distance_cont}{Character string specifying the distance metric for continuous variables. Options include \code{"manhattan"} (default) and \code{"euclidean"}.}
   \item{distance_cat}{Character string specifying the distance metric for categorical variables. Options include \code{"tot_var_dist"} (default), \code{"HL"}, \code{"HLeucl"}, \code{cat_dis}, \code{mca}, \code{st_dev},  \code{"matching"}, \code{"eskin"}, \code{"iof"}, \code{"of"}, \code{"goodall_3"}, \code{"goodall_4"}, \code{"gifi_chi2"}, \code{"lin"}, \code{"var_entropy"}, \code{"var_mutability"}, \code{"supervised"}, \code{"supervised_full"}, \code{"le_and_ho"} and all the options in the package philentropy.}
   \item{commensurable}{Logical. If \code{TRUE}, the function adjusts each variable's contribution to ensure equal average influence in the overall distance. Default is \code{FALSE}.}
-  \item{scaling}{Character string specifying the scaling method for continuous variables. Options include \code{"none"} (default), \code{"std"}, \code{"range"}, \code{"pc_scores"}, and \code{"robust"}.}
-  \item{ncomp}{Integer specifying the number of components to retain when \code{scaling = "pc_scores"}. Default is \code{ncol(x)}.}
-  \item{threshold}{Numeric value specifying the percentage of variance explained by retained components when \code{scaling = "pc_scores"}. Overrides \code{ncomp} if specified. Default is \code{NULL}.}
+  \item{scaling_cont}{Character string specifying the scaling method for continuous variables. Options include \code{"none"} (default), \code{"std"}, \code{"range"}, \code{"pc_scores"}, and \code{"robust"}.}
+  \item{ncomp}{Integer specifying the number of components to retain when \code{scaling_cont = "pc_scores"}. Default is \code{ncol(x)}.}
+  \item{threshold}{Numeric value specifying the percentage of variance explained by retained components when \code{scaling_cont = "pc_scores"}. Overrides \code{ncomp} if specified. Default is \code{NULL}.}
   \item{preset}{Character string specifying pre-defined combinations of arguments. Options include:
     \itemize{
       \item{\code{"custom"} (default): Use specified distance metrics and parameters}
@@ -68,13 +68,13 @@ dist_custom <- mdist(x = tr_pengmix,
                     distance_cont = "manhattan",
                     distance_cat = "matching",
                     commensurable = TRUE,
-                    scaling = "std")
+                    scaling_cont = "std")
 
 # Example 5: PCA-based scaling with threshold
 dist_pca <- mdist(x = tr_pengmix,
                  validate_x = ts_pengmix,
                  distance_cont = "euclidean",
-                 scaling = "pc_scores",
+                 scaling_cont = "pc_scores",
                  threshold = 0.85)
 
 # Example 6: Categorical variables only
@@ -89,7 +89,7 @@ num_vars <- c("bill_length_mm", "bill_depth_mm",
 dist_cont <- mdist(tr_pengmix[, num_vars],
                   validate_x = ts_pengmix[, num_vars],
                   distance_cont = "manhattan",
-                  scaling = "std")
+                  scaling_cont = "std")
 
 # Example 8: Supervised distance with response
 response_tr <- tr_pengmix$body_mass_g

@@ -74,14 +74,28 @@ cat_delta <- function(x, y = NULL, method = NULL, method_cat="tot_var_dist", mkw
     block_ids=cbind(blocks_id_a,blocks_id_b)
     
     pull_block <-function(start=1,stop=1,end_start=1,end_stop=1,squared=TRUE){
-      if(squared==T){
+      if(squared==TRUE){
         return(ZZod[start:stop,end_start:end_stop])
       }else{
-        return(Z[,start:stop])
+       return(Z[,start:stop])
       }
+  
     }
     
+    pull_conditional_block <- function(start, stop, end_start, end_stop) {
+      # Extract the joint probability block between variables j and k
+      joint_block <- ZZod[start:stop, end_start:end_stop]
+      
+      # Convert to conditional probabilities P(X_j | X_k)
+      # Each column represents P(X_j = x_j | X_k = x_k)
+      conditional_block <- sweep(joint_block, 2, colSums(joint_block), FUN = "/")
+      
+      # Handle cases where colSums might be zero (avoid division by zero)
+      conditional_block[is.nan(conditional_block)] <- 0
+      conditional_block[is.infinite(conditional_block)] <- 0
     
+      return(conditional_block)
+    }
     # distance_blocks = tibble(row_ind = crs$a,col_ind=crs$b,
     #                          blocks = pmap(block_ids, ~pull_block(start=..1,stop=..2,
     #                                                               squared=FALSE)

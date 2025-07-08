@@ -144,6 +144,7 @@ cat_custom_delta<-function(ZZod,Z,Z_y,Z_list,zm,Q,nvar,method,Qs){
 
   if(method=="lin"){
     prop = as.matrix(zm/n)
+   
 
     pv<-prop
     pr<-pv %*% rep(1,Qs)
@@ -151,8 +152,10 @@ cat_custom_delta<-function(ZZod,Z,Z_y,Z_list,zm,Q,nvar,method,Qs){
     pp<-pr+pc
     pplog<-log(pr)+log(pc)
     diag(pp)<-prop
+ #   print(log(pp))
   #  linsim2<- (pplog - 2*log(pp))/2*log(pp)
-    linsim2<- (pplog - 2*log(pp))/(2*log(pp)) # NEW CODE, ADDED BRACKETS FOR DIVISION AND ADDED EPS 27-12-2024
+    linsim2<- (pplog - 2*log(pp))/2*log(pp) # NEW CODE, ADDED BRACKETS FOR DIVISION AND ADDED EPS 27-12-2024
+    linsim2[is.nan(linsim2)] <- 0 # ADDED 8 July 2025 - NEEDS FURTHER INVESTIGTION
     # print(blocks)
     full_delta<-as.matrix(blocks*linsim2)
     #full_delta<-as.matrix(blocks*linsim2)/nvar
@@ -168,6 +171,7 @@ cat_custom_delta<-function(ZZod,Z,Z_y,Z_list,zm,Q,nvar,method,Qs){
       }
       start_index <- start_index + Q[j] # Move to the next block
     }
+   # print(full_delta)
   }
 
   if(method=="var_entropy"){
