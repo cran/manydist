@@ -1,4 +1,4 @@
-0f95f5b07ee3331063eb945f0db9621f *DESCRIPTION
+c6b414a3d070115db26c59e97d45b6b5 *DESCRIPTION
 90142141b93fd9772f02f9c48f292ecc *NAMESPACE
 c46b116abfcf74fc02d784c2f8968285 *R/cat_custom_delta.R
 d353e29b92ea2a76dac4259658a716ac *R/cat_delta.R
@@ -9,7 +9,7 @@ c928418ed886d2ab30ef8915a5c9e309 *R/cont_delta_single_attr.R
 d28d9b6f0196689cca7522c76327f75e *R/gower_recipe.R
 11e95675ad5a22cc7f0750e570095a5a *R/indicator_based.R
 7fc91aab2d93b40610cd7d258b2b4007 *R/mahalanobis_like.R
-5c8cf3bffe5148ccd1c49a0865df752f *R/mdist.R
+60b9f7b12c2f0f315122eb807d1b5cf8 *R/mdist.R
 2316397066a2f45a7e7f537975d0ab0a *R/mix_delta.R
 c29829f51d80ee3009cfcdbac67f7527 *R/ndist.R
 cfe0000d941a35175246fd712ecc3d70 *R/z_preproc.R

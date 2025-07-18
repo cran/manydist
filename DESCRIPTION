@@ -1,7 +1,7 @@
 Package: manydist
 Type: Package
 Title: Unbiased Distances for Mixed-Type Data
-Version: 0.4.7
+Version: 0.4.8
 Authors@R: c(
     person(given = "Alfonso",
            family = "Iodice D'Enza",
@@ -42,10 +42,10 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 NeedsCompilation: no
-Packaged: 2025-07-08 12:09:33 UTC; amarkos
+Packaged: 2025-07-18 09:39:42 UTC; amarkos
 Author: Alfonso Iodice D'Enza [aut],
   Angelos Markos [aut, cre],
   Michel van de Velden [aut],
   Carlo Cavicchia [aut]
 Repository: CRAN
-Date/Publication: 2025-07-08 14:10:01 UTC
+Date/Publication: 2025-07-18 10:30:02 UTC

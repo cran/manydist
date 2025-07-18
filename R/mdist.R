@@ -102,7 +102,7 @@ mdist <- function(x,validate_x=NULL,response=NULL, distance_cont="manhattan", di
       distance_cont = "manhattan"
       distance_cat = "tot_var_dist"
       commensurable = TRUE
-      cont_scaling_cont = "pc_scores"
+      scaling_cont = "pc_scores"
       # cont_scaling_cont="none"
       # cat_scaling_cont="none"
      # scaling_cont="std"
